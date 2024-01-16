@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import models.exceptions.ResourceNotFoundException;
 import models.requests.CreateUserRequest;
 import models.response.UserResponse;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,11 +21,19 @@ public class UserService {
         return mapper.fromEntity(
                 repository.findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException(
-                                "Código: " +id+ " não encontrado.")
+                                "Id: " +id+ " não encontrado.")
                         ));
     }
 
     public void save(CreateUserRequest createUserRequest) {
+        verifyIfEmailExists(createUserRequest.email(), null);
         repository.save(mapper.fromRequest(createUserRequest));
+    }
+
+    private void verifyIfEmailExists(final String email, final String id){
+        repository.findByEmail(email)
+                .filter(user -> !user.getId().equals(id))
+                .ifPresent(user -> {throw new DataIntegrityViolationException("E-mail "+email+" já existe na base de dados");
+        });
     }
 }
