@@ -5,6 +5,7 @@ import com.jopaulo.userserviceapi.mapper.UserMapper;
 import com.jopaulo.userserviceapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import models.exceptions.ResourceNotFoundException;
+import models.requests.CreateUserRequest;
 import models.response.UserResponse;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,9 @@ public class UserService {
                         .orElseThrow(() -> new ResourceNotFoundException(
                                 "Código: " +id+ " não encontrado.")
                         ));
+    }
+
+    public void save(CreateUserRequest createUserRequest) {
+        repository.save(mapper.fromRequest(createUserRequest));
     }
 }

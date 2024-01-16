@@ -9,11 +9,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import models.exceptions.StandardError;
+import models.requests.CreateUserRequest;
 import models.response.UserResponse;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "UserController", description = "Controller responsável pelas operações do usuário")
 @RequestMapping("/api/users")
@@ -24,12 +24,12 @@ public interface UserController {
             @ApiResponse(responseCode = "200", description = "Usuário encontrado"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
                     content = @Content(
-                        mediaType = "application/json",
+                        mediaType = MediaType.APPLICATION_JSON_VALUE,
                         schema = @Schema(implementation = StandardError.class)
                     )),
             @ApiResponse(responseCode = "500", description = "Erro interno no servidor",
                     content = @Content(
-                            mediaType = "application/json",
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = StandardError.class)
                     ))
     })
@@ -38,4 +38,21 @@ public interface UserController {
             @Parameter(description = "User id", required = true, example = "65794a5330a73e4d5e73261b")
             @PathVariable final String id
     );
+
+    @Operation(summary = "Save new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuário criado"),
+            @ApiResponse(responseCode = "400", description = "Pedido incorreto",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)
+                    )),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)
+                    ))
+    })
+    @PostMapping
+    ResponseEntity<Void> save(@RequestBody final CreateUserRequest createUserRequest);
 }
