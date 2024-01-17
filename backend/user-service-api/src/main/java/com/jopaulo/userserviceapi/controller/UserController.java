@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import models.exceptions.StandardError;
 import models.requests.CreateUserRequest;
+import models.requests.UpdateUserRequest;
 import models.response.UserResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -75,4 +76,34 @@ public interface UserController {
     })
     @GetMapping
     ResponseEntity<List<UserResponse>> findAll();
+
+    @Operation(summary = "Update user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário atualizado",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = UserResponse.class)
+                    )),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)
+                    )),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)
+                    )),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)
+                    ))
+    })
+    @PutMapping("/{id}")
+    ResponseEntity<UserResponse> update(
+            @Parameter(description = "User id", required = true, example = "65794a5330a73e4d5e73261b")
+            @PathVariable final String id,
+            @Valid final UpdateUserRequest updateUserRequest
+    );
 }

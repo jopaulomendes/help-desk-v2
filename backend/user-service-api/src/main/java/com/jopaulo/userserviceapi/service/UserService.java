@@ -6,6 +6,7 @@ import com.jopaulo.userserviceapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import models.exceptions.ResourceNotFoundException;
 import models.requests.CreateUserRequest;
+import models.requests.UpdateUserRequest;
 import models.response.UserResponse;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,11 @@ public class UserService {
     private final UserMapper mapper;
 
     public UserResponse findById(final String id) {
-        return mapper.fromEntity(
-                repository.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException(
-                                "Id: " +id+ " não encontrado.")
-                        ));
+        return mapper.fromEntity(find(id));
+    }
+
+    public List<UserResponse> findAll() {
+        return repository.findAll().stream().map(mapper::fromEntity).toList();
     }
 
     public void save(CreateUserRequest createUserRequest) {
@@ -32,14 +33,24 @@ public class UserService {
         repository.save(mapper.fromRequest(createUserRequest));
     }
 
+    public UserResponse update(final String id, final UpdateUserRequest updateUserRequest) {
+        User entity = find(id);
+        verifyIfEmailExists(updateUserRequest.email(), id);
+        return mapper.fromEntity(repository.save(mapper.update(updateUserRequest, entity)));
+    }
+
+    private User find (final String id){
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Id: " +id+ " não encontrado.")
+                );
+    }
+
     private void verifyIfEmailExists(final String email, final String id){
         repository.findByEmail(email)
                 .filter(user -> !user.getId().equals(id))
                 .ifPresent(user -> {throw new DataIntegrityViolationException("E-mail "+email+" já existe na base de dados");
-        });
+                });
     }
 
-    public List<UserResponse> findAll() {
-        return repository.findAll().stream().map(mapper::fromEntity).toList();
-    }
 }
