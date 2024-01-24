@@ -104,6 +104,6 @@ public interface UserController {
     ResponseEntity<UserResponse> update(
             @Parameter(description = "User id", required = true, example = "65794a5330a73e4d5e73261b")
             @PathVariable final String id,
-            @Valid final UpdateUserRequest updateUserRequest
+            @Valid @RequestBody final UpdateUserRequest updateUserRequest
     );
 }

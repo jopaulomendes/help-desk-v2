@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 @RestController
 @RequiredArgsConstructor
 public class UserControllerImpl implements UserController {
@@ -26,7 +28,7 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<Void> save(final CreateUserRequest createUserRequest) {
         service.save(createUserRequest);
-        return ResponseEntity.status(HttpStatus.CREATED.value()).build();
+        return ResponseEntity.status(CREATED.value()).build();
     }
 
     @Override

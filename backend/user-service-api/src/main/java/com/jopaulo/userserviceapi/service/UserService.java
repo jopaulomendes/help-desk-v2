@@ -9,6 +9,7 @@ import models.requests.CreateUserRequest;
 import models.requests.UpdateUserRequest;
 import models.response.UserResponse;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class UserService {
 
     private final UserRepository repository;
     private final UserMapper mapper;
+    private final BCryptPasswordEncoder encoder;
 
     public UserResponse findById(final String id) {
         return mapper.fromEntity(find(id));
@@ -28,15 +30,23 @@ public class UserService {
         return repository.findAll().stream().map(mapper::fromEntity).toList();
     }
 
-    public void save(CreateUserRequest createUserRequest) {
-        verifyIfEmailExists(createUserRequest.email(), null);
-        repository.save(mapper.fromRequest(createUserRequest));
+    public void save(CreateUserRequest request) {
+        verifyIfEmailExists(request.email(), null);
+        repository.save(
+                mapper.fromRequest(request)
+                    .withPassword(encoder.encode(request.password()))
+        );
     }
 
-    public UserResponse update(final String id, final UpdateUserRequest updateUserRequest) {
+    public UserResponse update(final String id, final UpdateUserRequest request) {
         User entity = find(id);
-        verifyIfEmailExists(updateUserRequest.email(), id);
-        return mapper.fromEntity(repository.save(mapper.update(updateUserRequest, entity)));
+        verifyIfEmailExists(request.email(), id);
+        return mapper.fromEntity(
+                repository.save(
+                        mapper.update(request, entity)
+                                .withPassword(request.password() != null ? encoder.encode(request.password()) : entity.getPassword())
+                )
+        );
     }
 
     private User find (final String id){
@@ -49,7 +59,8 @@ public class UserService {
     private void verifyIfEmailExists(final String email, final String id){
         repository.findByEmail(email)
                 .filter(user -> !user.getId().equals(id))
-                .ifPresent(user -> {throw new DataIntegrityViolationException("E-mail "+email+" já existe na base de dados");
+                .ifPresent(user -> {
+                    throw new DataIntegrityViolationException("E-mail "+email+" já existe na base de dados");
                 });
     }
 
