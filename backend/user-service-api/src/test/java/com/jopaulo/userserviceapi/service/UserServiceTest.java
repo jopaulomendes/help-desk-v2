@@ -4,6 +4,7 @@ import com.jopaulo.userserviceapi.entity.User;
 import com.jopaulo.userserviceapi.mapper.UserMapper;
 import com.jopaulo.userserviceapi.repository.UserRepository;
 import models.exceptions.ResourceNotFoundException;
+import models.requests.CreateUserRequest;
 import models.response.UserResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.List;
 import java.util.Optional;
 
+import static com.jopaulo.userserviceapi.creator.CreatorUtils.generetMock;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -36,7 +38,7 @@ class UserServiceTest {
     @Test
     void whenCallFindByIdWithValidThenReturnUserResponse(){
         when(repository.findById(anyString())).thenReturn(Optional.of(new User()));
-        when(mapper.fromEntity(any(User.class))).thenReturn(mock(UserResponse.class));
+        when(mapper.fromEntity(any(User.class))).thenReturn(generetMock(UserResponse.class));
 
         final var response = service.findById("1");
 
@@ -63,7 +65,7 @@ class UserServiceTest {
     }
 
     @Test
-    void whenCallSaveThenSuccess() {
+    void whenCallFindAllThenReturnListOfUserResponse() {
         when(repository.findAll()).thenReturn(List.of(new User(), new User()));
         when(mapper.fromEntity(any(User.class))).thenReturn(mock(UserResponse.class));
 
@@ -75,5 +77,22 @@ class UserServiceTest {
 
         verify(repository, times(1)).findAll();
         verify(mapper, times(2)).fromEntity(any(User.class));
+    }
+
+    @Test
+    void whenCallSaveThenSuccess() {
+        final var request = generetMock(CreateUserRequest.class);
+
+        when(mapper.fromRequest(any())).thenReturn(new User());
+        when(encoder.encode(anyString())).thenReturn("encoded");
+        when(repository.save(any(User.class))).thenReturn(new User());
+        when(repository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+        service.save(request);
+
+        verify(mapper).fromRequest(request);
+        verify(encoder).encode(request.password());
+        verify(repository).save(any(User.class));
+        verify(repository).findByEmail(request.email());
     }
 }
