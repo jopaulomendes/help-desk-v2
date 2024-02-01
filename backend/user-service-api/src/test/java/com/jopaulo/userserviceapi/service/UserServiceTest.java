@@ -3,6 +3,7 @@ package com.jopaulo.userserviceapi.service;
 import com.jopaulo.userserviceapi.entity.User;
 import com.jopaulo.userserviceapi.mapper.UserMapper;
 import com.jopaulo.userserviceapi.repository.UserRepository;
+import models.exceptions.ResourceNotFoundException;
 import models.response.UserResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,5 +42,20 @@ class UserServiceTest {
         assertEquals(UserResponse.class, response.getClass());
         verify(repository, times(1)).findById(anyString());
         verify(mapper, times(1)).fromEntity(any(User.class));
+    }
+
+    @Test
+    void whenCallFindByIdWithInvalidIdThenThrowResourceNotFoundException() {
+        when(repository.findById(anyString())).thenReturn(Optional.empty());
+
+        try {
+            service.findById("1");
+        } catch (Exception e) {
+            assertEquals(ResourceNotFoundException.class, e.getClass());
+            assertEquals("Id: 1 não encontrado.", e.getMessage());
+        }
+
+        verify(repository, times(1)).findById(anyString());
+        verify(mapper, times(0)).fromEntity(any(User.class));
     }
 }
