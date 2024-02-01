@@ -60,7 +60,7 @@ public class UserService {
         repository.findByEmail(email)
                 .filter(user -> !user.getId().equals(id))
                 .ifPresent(user -> {
-                    throw new DataIntegrityViolationException("E-mail "+email+" já existe na base de dados");
+                    throw new DataIntegrityViolationException("E-mail "+email+" já cadastrado.");
                 });
     }
 

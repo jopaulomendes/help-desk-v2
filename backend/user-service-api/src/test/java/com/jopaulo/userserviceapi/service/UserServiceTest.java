@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
@@ -94,5 +95,25 @@ class UserServiceTest {
         verify(encoder).encode(request.password());
         verify(repository).save(any(User.class));
         verify(repository).findByEmail(request.email());
+    }
+
+    @Test
+    void whenCallSaveWithInvalidEmailThenThrowDataIntegrityViolationException() {
+        final var request = generetMock(CreateUserRequest.class);
+        final var entity = generetMock(User.class);
+
+        when(repository.findByEmail(anyString())).thenReturn(Optional.of(entity));
+
+        try {
+            service.save(request);
+        } catch (Exception e) {
+            assertEquals(DataIntegrityViolationException.class, e.getClass());
+            assertEquals("E-mail "+request.email()+" já cadastrado.", e.getMessage());
+        }
+
+        verify(repository).findByEmail(request.email());
+        verify(mapper, times(0)).fromRequest(request);
+        verify(encoder, times(0)).encode(request.password());
+        verify(repository, times(0)).save(any(User.class));
     }
 }
