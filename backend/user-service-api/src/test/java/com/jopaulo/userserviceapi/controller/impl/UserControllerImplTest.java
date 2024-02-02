@@ -1,12 +1,15 @@
 package com.jopaulo.userserviceapi.controller.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jopaulo.userserviceapi.entity.User;
 import com.jopaulo.userserviceapi.repository.UserRepository;
+import models.requests.CreateUserRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -16,7 +19,9 @@ import java.util.List;
 import static com.jopaulo.userserviceapi.creator.CreatorUtils.generetMock;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -74,5 +79,26 @@ class UserControllerImplTest {
                 .andExpect(jsonPath("$.[1].profile").isArray());
 
         repository.deleteAll(List.of(entity1, entity2));
+    }
+
+    @Test
+    void testSaveUserWithSuccess() throws Exception {
+        final var validEmail = "email_teste@mail.com";
+        final var request = generetMock(CreateUserRequest.class).withEmail(validEmail);
+
+        mockMvc.perform(post("/api/users")
+                .contentType(APPLICATION_JSON)
+                .content(toJson(request)))
+                .andExpect(status().isCreated());
+
+        repository.deleteByEmail(validEmail);
+    }
+
+    private String toJson(final Object object) throws Exception {
+        try {
+            return new ObjectMapper().writeValueAsString(object);
+        } catch (final Exception e) {
+            throw new Exception("Error to convert object to json", e);
+        }
     }
 }
