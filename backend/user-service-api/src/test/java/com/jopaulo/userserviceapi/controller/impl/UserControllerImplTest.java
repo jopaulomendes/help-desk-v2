@@ -18,7 +18,7 @@ import java.util.List;
 
 import static com.jopaulo.userserviceapi.creator.CreatorUtils.generetMock;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,6 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class UserControllerImplTest {
 
+    public static final String BASE_URI = "/api/users";
+    public static final String VALID_EMAIL = "email_teste@mail.com";
     @Autowired
     private MockMvc mockMvc;
 
@@ -92,6 +94,27 @@ class UserControllerImplTest {
                 .andExpect(status().isCreated());
 
         repository.deleteByEmail(validEmail);
+    }
+
+    @Test
+    void testSaveUserWithConflict() throws Exception {
+        final var entity = generetMock(User.class).withEmail(VALID_EMAIL);
+
+        repository.save(entity);
+
+        final var request = generetMock(CreateUserRequest.class).withEmail(VALID_EMAIL);
+
+        mockMvc.perform(post(BASE_URI)
+                        .contentType(APPLICATION_JSON)
+                        .content(toJson(request)))
+                        .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value("E-mail "+ VALID_EMAIL +" já cadastrado."))
+                .andExpect(jsonPath("$.error").value(CONFLICT.getReasonPhrase()))
+                .andExpect(jsonPath("$.path").value(BASE_URI))
+                .andExpect(jsonPath("$.status").value(CONFLICT.value()))
+                .andExpect(jsonPath("$.timestamp").isNotEmpty());
+
+        repository.deleteById(entity.getId());
     }
 
     private String toJson(final Object object) throws Exception {
