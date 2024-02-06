@@ -72,7 +72,7 @@ class UserControllerImplTest {
 
         repository.saveAll(List.of(entity1, entity2));
 
-        mockMvc.perform(get("/api/users"))
+        mockMvc.perform(get(BASE_URI))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.[0]").isNotEmpty())
@@ -88,7 +88,7 @@ class UserControllerImplTest {
         final var validEmail = "email_teste@mail.com";
         final var request = generetMock(CreateUserRequest.class).withEmail(validEmail);
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post(BASE_URI)
                 .contentType(APPLICATION_JSON)
                 .content(toJson(request)))
                 .andExpect(status().isCreated());
@@ -115,6 +115,22 @@ class UserControllerImplTest {
                 .andExpect(jsonPath("$.timestamp").isNotEmpty());
 
         repository.deleteById(entity.getId());
+    }
+
+    @Test
+    void testSaveUserWithNameEmptyThenThrowBadRequest() throws Exception{
+        final var request = generetMock(CreateUserRequest.class).withName("").withEmail(VALID_EMAIL);
+
+        mockMvc.perform(
+                        post(BASE_URI)
+                                .contentType(APPLICATION_JSON)
+                                .content(toJson(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Exceção ao validar os atributos"))
+                .andExpect(jsonPath("$.error").value("Exceção de Validação"))
+                .andExpect(jsonPath("$.path").value(BASE_URI))
+                .andExpect(jsonPath("$.status").value(BAD_REQUEST.value()))
+                .andExpect(jsonPath("$.timestamp").isNotEmpty());
     }
 
     private String toJson(final Object object) throws Exception {
