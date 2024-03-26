@@ -18,18 +18,20 @@ public class JwtAuthenticationsImpl {
 
     public AuthenticateResponse authenticate(final AuthenticateRequest request){
         try {
-            log.info("Usuário autenticado: {}" + request.email());
-            final var authResult =
-                    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+            log.info("Usuário informado: " + request.email());
+            final var authResult = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.email(), request.password())
+            );
             return buildAuthenticateResponse((UserDetailsDTO) authResult.getPrincipal());
         } catch (BadCredentialsException ex) {
-            log.error("Erro ao autenticar usuário: {}", ex.getMessage());
+            log.error(ex.getMessage());
+            log.error("Erro ao autenticar usuário: ", request.email());
             throw new BadCredentialsException("E-mail ou senha inválido");
         }
     }
 
     protected AuthenticateResponse buildAuthenticateResponse(final UserDetailsDTO detailsDTO){
-        log.info("Usuário autenticado com sucesso: {}" + detailsDTO.getUsername());
+        log.info("Usuário autenticado com sucesso: " + detailsDTO.getUsername());
         final var token = jwtUtils.generateToken(detailsDTO);
         return AuthenticateResponse.builder()
                 .type("JWT")

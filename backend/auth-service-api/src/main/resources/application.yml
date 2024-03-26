@@ -7,7 +7,7 @@ spring:
       auto-index-creation: true
 
 jwt.secret: 'xal8EsbASS5XyV4puGRB4Q/hy7OCw01b3OSDMmGYhETg3lDjoDaH2+SyvFC5JG36cy+FJTg4MGTukxVz2YIRvcbx8djbRjkQZUzR3kuN9FQ='
-jwt.expiration: 120000
+jwt.expiration: 86400000
 
 server:
   port: 8081

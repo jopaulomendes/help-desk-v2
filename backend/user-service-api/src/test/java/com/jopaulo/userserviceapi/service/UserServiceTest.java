@@ -71,7 +71,7 @@ class UserServiceTest {
         when(repository.findAll()).thenReturn(List.of(new User(), new User()));
         when(mapper.fromEntity(any(User.class))).thenReturn(mock(UserResponse.class));
 
-        final var response = service.findAll();
+        var response = service.findAll();
 
         assertNotNull(response);
         assertEquals(2, response.size());
