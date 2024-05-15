@@ -12,7 +12,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 public class SecurityConfig {
 
-    @SneakyThrows
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception{
         return security

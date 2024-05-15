@@ -1,7 +1,7 @@
 package com.jopaulo.authserviceapi.controller.impl;
 
 import com.jopaulo.authserviceapi.controller.AuthController;
-import com.jopaulo.authserviceapi.security.dtos.JwtAuthenticationsImpl;
+import com.jopaulo.authserviceapi.security.JwtAuthenticationsImpl;
 import com.jopaulo.authserviceapi.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import models.requests.AuthenticateRequest;

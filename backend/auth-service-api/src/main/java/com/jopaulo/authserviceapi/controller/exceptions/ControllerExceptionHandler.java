@@ -20,7 +20,9 @@ import static org.springframework.http.HttpStatus.*;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
-    ResponseEntity<StandardError> handleBadCredentialsException(final BadCredentialsException exception, final HttpServletRequest request){
+    ResponseEntity<StandardError> handleBadCredentialsException(
+            final RuntimeException exception, final HttpServletRequest request
+    ){
         return ResponseEntity.status(UNAUTHORIZED).body(
                 StandardError.builder()
                         .timestamp(now())
@@ -33,7 +35,9 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<StandardError> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception, final HttpServletRequest request){
+    ResponseEntity<StandardError> handleMethodArgumentNotValidException(
+            final MethodArgumentNotValidException exception, final HttpServletRequest request
+    ){
         var error = ValidationException.builder()
                 .timestamp(now())
                 .status(BAD_REQUEST.value())

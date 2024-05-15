@@ -11,7 +11,7 @@ public record UserResponse(
         String name,
         String email,
         String password,
-        Set<ProfileEnum> profile
+        Set<ProfileEnum> profiles
 ) implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

@@ -26,6 +26,6 @@ public record CreateUserRequest(
         @NotBlank(message = "A senha do usuário é obrigatório")
         String password,
         @Schema(description = "Perfil do usuário", example = "[\"ROLE_ADMIN\", \"ROLE_CUSTOMER\", \"ROLE_TECHICIAN\"]")
-        Set<ProfileEnum> profile
+        Set<ProfileEnum> profiles
 ) {
 }

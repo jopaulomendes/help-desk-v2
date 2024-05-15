@@ -24,9 +24,9 @@ import java.util.List;
 @RequestMapping("/api/users")
 public interface UserController {
 
-    @Operation(summary = "Find user by id")
+    @Operation(summary = "Buscar usuário por ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuário encontrado"),
+            @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso!"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
                     content = @Content(
                         mediaType = MediaType.APPLICATION_JSON_VALUE,
@@ -40,11 +40,11 @@ public interface UserController {
     })
     @GetMapping("/{id}")
     ResponseEntity<UserResponse> findById(
-            @Parameter(description = "User id", required = true, example = "65794a5330a73e4d5e73261b")
+            @Parameter(description = "User id", required = true, example = "65f12549764a873447fc5383")
             @PathVariable final String id
     );
 
-    @Operation(summary = "Save new user")
+    @Operation(summary = "Salvar novo usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Usuário criado"),
             @ApiResponse(responseCode = "400", description = "Pedido incorreto",
@@ -61,7 +61,7 @@ public interface UserController {
     @PostMapping
     ResponseEntity<Void> save(@Valid @RequestBody final CreateUserRequest createUserRequest);
 
-    @Operation(summary = "Find all user")
+    @Operation(summary = "Buscar todos os usuparios")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuários encontrados",
                     content = @Content(
@@ -77,7 +77,7 @@ public interface UserController {
     @GetMapping
     ResponseEntity<List<UserResponse>> findAll();
 
-    @Operation(summary = "Update user")
+    @Operation(summary = "Atualizar usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuário atualizado",
                     content = @Content(

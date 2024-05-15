@@ -11,6 +11,7 @@ import java.util.Collection;
 @Getter
 @Builder
 public class UserDetailsDTO implements UserDetails {
+
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -37,7 +38,7 @@ public class UserDetailsDTO implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override

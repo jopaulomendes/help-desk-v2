@@ -23,6 +23,6 @@ public record UpdateUserRequest(
         @Size(max = 12, message = "A senha do usuário deve ter no máximo 12 caracteres")
         String password,
         @Schema(description = "Perfil do usuário", example = "[\"ROLE_ADMIN\", \"ROLE_CUSTOMER\", \"ROLE_TECHICIAN\"]")
-        Set<ProfileEnum> profile
+        Set<ProfileEnum> profiles
 ) {
 }

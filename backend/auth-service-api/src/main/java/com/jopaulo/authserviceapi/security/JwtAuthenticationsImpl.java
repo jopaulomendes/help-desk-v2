@@ -1,5 +1,6 @@
-package com.jopaulo.authserviceapi.security.dtos;
+package com.jopaulo.authserviceapi.security;
 
+import com.jopaulo.authserviceapi.security.dtos.UserDetailsDTO;
 import com.jopaulo.authserviceapi.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,7 +25,6 @@ public class JwtAuthenticationsImpl {
             );
             return buildAuthenticateResponse((UserDetailsDTO) authResult.getPrincipal());
         } catch (BadCredentialsException ex) {
-            log.error(ex.getMessage());
             log.error("Erro ao autenticar usuário: ", request.email());
             throw new BadCredentialsException("E-mail ou senha inválido");
         }

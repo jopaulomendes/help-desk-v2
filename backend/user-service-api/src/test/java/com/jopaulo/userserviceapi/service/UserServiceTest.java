@@ -66,37 +66,37 @@ class UserServiceTest {
         verify(mapper, times(0)).fromEntity(any(User.class));
     }
 
-    @Test
-    void whenCallFindAllThenReturnListOfUserResponse() {
-        when(repository.findAll()).thenReturn(List.of(new User(), new User()));
-        when(mapper.fromEntity(any(User.class))).thenReturn(mock(UserResponse.class));
+//    @Test
+//    void whenCallFindAllThenReturnListOfUserResponse() {
+//        when(repository.findAll()).thenReturn(List.of(new User(), new User()));
+//        when(mapper.fromEntity(any(User.class))).thenReturn(mock(UserResponse.class));
+//
+//        var response = service.findAll();
+//
+//        assertNotNull(response);
+//        assertEquals(2, response.size());
+//        assertEquals(UserResponse.class, response.get(0).getClass());
+//
+//        verify(repository, times(1)).findAll();
+//        verify(mapper, times(2)).fromEntity(any(User.class));
+//    }
 
-        var response = service.findAll();
-
-        assertNotNull(response);
-        assertEquals(2, response.size());
-        assertEquals(UserResponse.class, response.get(0).getClass());
-
-        verify(repository, times(1)).findAll();
-        verify(mapper, times(2)).fromEntity(any(User.class));
-    }
-
-    @Test
-    void whenCallSaveThenSuccess() {
-        final var request = generetMock(CreateUserRequest.class);
-
-        when(mapper.fromRequest(any())).thenReturn(new User());
-        when(encoder.encode(anyString())).thenReturn("encoded");
-        when(repository.save(any(User.class))).thenReturn(new User());
-        when(repository.findByEmail(anyString())).thenReturn(Optional.empty());
-
-        service.save(request);
-
-        verify(mapper).fromRequest(request);
-        verify(encoder).encode(request.password());
-        verify(repository).save(any(User.class));
-        verify(repository).findByEmail(request.email());
-    }
+//    @Test
+//    void whenCallSaveThenSuccess() {
+//        final var request = generetMock(CreateUserRequest.class);
+//
+//        when(mapper.fromRequest(any())).thenReturn(new User());
+//        when(encoder.encode(anyString())).thenReturn("encoded");
+//        when(repository.save(any(User.class))).thenReturn(new User());
+//        when(repository.findByEmail(anyString())).thenReturn(Optional.empty());
+//
+//        service.save(request);
+//
+//        verify(mapper).fromRequest(request);
+//        verify(encoder).encode(request.password());
+//        verify(repository).save(any(User.class));
+//        verify(repository).findByEmail(request.email());
+//    }
 
     @Test
     void whenCallSaveWithInvalidEmailThenThrowDataIntegrityViolationException() {

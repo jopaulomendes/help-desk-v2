@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .name(entity.getName())
                 .username(entity.getEmail())
                 .password(entity.getPassword())
-                .authorities(entity.getProfile().stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toSet()))
+                .authorities(entity.getProfiles().stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toSet()))
                 .build();
     }
 }
