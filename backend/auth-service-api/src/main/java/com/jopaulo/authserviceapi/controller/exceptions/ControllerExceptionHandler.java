@@ -1,6 +1,7 @@
 package com.jopaulo.authserviceapi.controller.exceptions;
 
 import jakarta.servlet.http.HttpServletRequest;
+import models.exceptions.RefreshTokenExpired;
 import models.exceptions.StandardError;
 import models.exceptions.ValidationException;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import static org.springframework.http.HttpStatus.*;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler(BadCredentialsException.class)
+    @ExceptionHandler({BadCredentialsException.class, RefreshTokenExpired.class})
     ResponseEntity<StandardError> handleBadCredentialsException(
             final RuntimeException exception, final HttpServletRequest request
     ){

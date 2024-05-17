@@ -7,6 +7,7 @@ spring:
 
 jwt.secret: 'Iwal1bzQ4ryZ/zl6VOBkV24m+8A33HeuBKxkLtXf+b2x3mTZ+p6XLDuohzA0YfTDg1U/0aBArZBX0oZtrOBzKuo3zZZwNZU+frZVeP70JKE='
 jwt.expiration: 86400000
+jwt.expiration-sec.refresh-token: 3600
 
 server:
   port: 8081
