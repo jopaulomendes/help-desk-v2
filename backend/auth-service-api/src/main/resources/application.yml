@@ -1,13 +1,8 @@
 spring:
   application:
     name: 'auth-service-api'
-  data:
-    mongodb:
-      uri: 'mongodb+srv://help-desk-user:help-desk-user@clustehelpdesk.jdeh5sf.mongodb.net/helpdeskdb?retryWrites=true&w=majority'
-
-jwt.secret: 'Iwal1bzQ4ryZ/zl6VOBkV24m+8A33HeuBKxkLtXf+b2x3mTZ+p6XLDuohzA0YfTDg1U/0aBArZBX0oZtrOBzKuo3zZZwNZU+frZVeP70JKE='
-jwt.expiration: 86400000
-jwt.expiration-sec.refresh-token: 3600
-
-server:
-  port: 8081
+  cloud:
+    config:
+      uri: http://localhost:8888
+  profiles:
+    active: dev
