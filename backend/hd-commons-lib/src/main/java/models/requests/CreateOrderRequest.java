@@ -25,7 +25,7 @@ public record CreateOrderRequest (
         @Size(min = 10, max = 3000, message = "Descrição deve ter entre 10 e 3000 caracteres")
         String description,
 
-        @Schema(description = "Status da Ordem", example = "Aberto")
+        @Schema(description = "Status da Ordem", example = "Open")
         @NotBlank(message = "Status não pode ser vazio")
         @Size(min = 4, max = 15, message = "Status deve ter entre 4 e 15 caracteres")
         String status
