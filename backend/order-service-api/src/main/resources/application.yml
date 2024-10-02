@@ -4,5 +4,14 @@ spring:
   cloud:
     config:
       uri: http://localhost:8100
+  datasource:
+    url: 'jdbc:mysql://localhost:3306/db_help_desk_v2'
+    username: 'root'
+    password: '1234'
+    driver-class-name: 'com.mysql.cj.jdbc.Driver'
+  jpa:
+    hibernate:
+      ddl-auto: create  # Use 'update' para atualizar o esquema do banco
+    show-sql: true  # Opcional, para exibir as queries SQL no console
   profiles:
     active: dev
