@@ -12,6 +12,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create  # Use 'update' para atualizar o esquema do banco
+      jdbc:
+        time_zone: America/Sao_Paulo
     show-sql: true  # Opcional, para exibir as queries SQL no console
   profiles:
     active: dev
