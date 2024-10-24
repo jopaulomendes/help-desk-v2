@@ -1,6 +1,7 @@
 package com.jopaulo.orderserviceapi.controllers.impl;
 
 import com.jopaulo.orderserviceapi.controllers.OrderController;
+import com.jopaulo.orderserviceapi.mapper.OrderMapper;
 import com.jopaulo.orderserviceapi.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import models.requests.CreateOrderRequest;
@@ -17,6 +18,12 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class OrderControllerImpl implements OrderController {
 
     private final OrderService service;
+    private final OrderMapper mapper;
+
+    @Override
+    public ResponseEntity<OrderResponse> findById(Long id) {
+        return ResponseEntity.ok().body(mapper.fromEntity(service.findById(id)));
+    }
 
     @Override
     public ResponseEntity<Void> save(CreateOrderRequest request) {
