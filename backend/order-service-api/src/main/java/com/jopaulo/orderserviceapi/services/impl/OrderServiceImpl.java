@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
         Order entity = findById(id);
         entity = mapper.fromRequest(entity, request);
 
-        if (request.status().equals(CLOSED.getDescription())){
+        if (entity.getStatus().equals(CLOSED)){
             entity.setClosedAt(now());
         }
         return mapper.fromEntity(repository.save(entity));

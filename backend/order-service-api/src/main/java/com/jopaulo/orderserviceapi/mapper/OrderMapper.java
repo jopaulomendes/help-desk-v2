@@ -30,8 +30,8 @@ public interface OrderMapper {
     Order fromRequest(CreateOrderRequest request);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", source = "request.status")
-    @Mapping(target = "status", source = "status", qualifiedByName = "mapStatus")
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "status", source = "request.status", qualifiedByName = "mapStatus")
     Order fromRequest(@MappingTarget Order entity, UpdateOrdeRequest request);
 
     OrderResponse fromEntity(Order save);
