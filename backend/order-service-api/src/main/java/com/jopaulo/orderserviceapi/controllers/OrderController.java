@@ -25,7 +25,7 @@ public interface OrderController {
     @Operation(summary = "Procurar Ordem de Serviço")
     @GetMapping("/{id}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Ordem de Serviço encontrada"),
+            @ApiResponse(responseCode = "200", description = "Ordem de Serviço encontrada"),
             @ApiResponse(responseCode = "400", description = "O servidor não pode ou não processará a solicitação devido a algo que é percebido como um erro do cliente",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
@@ -95,5 +95,31 @@ public interface OrderController {
             @PathVariable(name = "id") Long id,
             @Parameter(description = "Atualizar Ordem de serviço")
             @Valid @RequestBody UpdateOrdeRequest request
+    );
+
+    @Operation(summary = "Deletar Ordem de Serviço")
+    @DeleteMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Ordem de Serviço encontrada"),
+            @ApiResponse(responseCode = "400", description = "O servidor não pode ou não processará a solicitação devido a algo que é percebido como um erro do cliente",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)
+                    )),
+            @ApiResponse(responseCode = "404", description = "Servidor não consegue encontrar o recurso solicitado",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)
+                    )),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)
+                    ))
+    })
+    ResponseEntity<Void> deleteById(
+            @NotNull(message = "O código da Ordem de Serviço deve ser informado")
+            @Parameter(description = "Ordem Id", example = "1", required = true)
+            @PathVariable(name = "id") final Long Id
     );
 }
