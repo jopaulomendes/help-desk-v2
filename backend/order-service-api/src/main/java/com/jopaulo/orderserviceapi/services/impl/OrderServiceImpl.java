@@ -14,6 +14,7 @@ import models.response.OrderResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static java.time.LocalDateTime.now;
 import static models.enums.OrderStatusEnum.CLOSED;
@@ -55,5 +56,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteById(final Long id) {
         repository.delete(findById(id));
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return repository.findAll();
     }
 }

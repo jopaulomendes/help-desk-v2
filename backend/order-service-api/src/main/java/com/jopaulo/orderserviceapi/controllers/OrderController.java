@@ -18,12 +18,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "OrderController", description = "Controller responsável pelas operações do ordens de serviço")
 @RequestMapping("/api/orders")
 public interface OrderController {
 
-    @Operation(summary = "Procurar Ordem de Serviço")
     @GetMapping("/{id}")
+    @Operation(summary = "Procurar Ordem de Serviço")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ordem de Serviço encontrada"),
             @ApiResponse(responseCode = "400", description = "O servidor não pode ou não processará a solicitação devido a algo que é percebido como um erro do cliente",
@@ -48,6 +50,19 @@ public interface OrderController {
             @PathVariable(name = "id") final Long Id
     );
 
+    @GetMapping
+    @Operation(summary = "Buscar todas Ordens de Serviços")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ordens de Serviços listadas"),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)
+                    ))
+    })
+    ResponseEntity<List<OrderResponse>> findAll();
+
+    @PostMapping
     @Operation(summary = "Salvar nova Ordem de Serviço")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Ordem de Serviço criada"),
@@ -67,9 +82,9 @@ public interface OrderController {
                             schema = @Schema(implementation = StandardError.class)
                     ))
     })
-    @PostMapping
     ResponseEntity<Void> save(@Valid @RequestBody final CreateOrderRequest request);
 
+    @PutMapping("/{id}")
     @Operation(summary = "Atualziar ordem de serviço")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Ordem de Serviço atulizada"),
@@ -89,7 +104,6 @@ public interface OrderController {
                             schema = @Schema(implementation = StandardError.class)
                     ))
     })
-    @PutMapping("/{id}")
     ResponseEntity<OrderResponse> update(
             @Parameter(description = "Ordem id", required = true, example = "1")
             @PathVariable(name = "id") Long id,
@@ -97,8 +111,8 @@ public interface OrderController {
             @Valid @RequestBody UpdateOrdeRequest request
     );
 
-    @Operation(summary = "Deletar Ordem de Serviço")
     @DeleteMapping("/{id}")
+    @Operation(summary = "Deletar Ordem de Serviço")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Ordem de Serviço encontrada"),
             @ApiResponse(responseCode = "400", description = "O servidor não pode ou não processará a solicitação devido a algo que é percebido como um erro do cliente",
