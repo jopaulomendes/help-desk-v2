@@ -14,7 +14,6 @@ import models.requests.CreateOrderRequest;
 import models.requests.CreateUserRequest;
 import models.requests.UpdateOrdeRequest;
 import models.response.OrderResponse;
-import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -136,29 +135,5 @@ public interface OrderController {
             @NotNull(message = "O código da Ordem de Serviço deve ser informado")
             @Parameter(description = "Ordem Id", example = "1", required = true)
             @PathVariable(name = "id") final Long Id
-    );
-
-    @GetMapping("/page")
-    @Operation(summary = "Buscar todas as Ordens de Serviços paginado")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ordens de Serviços paginadas"),
-            @ApiResponse(responseCode = "500", description = "Erro interno no servidor",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = StandardError.class)
-                    ))
-    })
-    ResponseEntity<Page<OrderResponse>> findAllPaginated(
-            @Parameter(description = "Número da página", example = "0", required = true)
-            @RequestParam(name = "page", defaultValue = "0") final Integer page,
-
-            @Parameter(description = "Linhas por página", example = "12", required = true)
-            @RequestParam(name = "linesPerPage", defaultValue = "12") final Integer linesPerPage,
-
-            @Parameter(description = "Direção da ordem", example = "ASC", required = true)
-            @RequestParam(name = "direction", defaultValue = "ASC") final String direction,
-
-            @Parameter(description = "Ordenar por atributo", example = "id", required = true)
-            @RequestParam(name = "orderBy", defaultValue = "id") final String orderBy
     );
 }
