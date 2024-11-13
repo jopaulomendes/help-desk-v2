@@ -1,5 +1,6 @@
 package com.jopaulo.orderserviceapi.services.impl;
 
+import com.jopaulo.orderserviceapi.clients.UserServiceFeignClient;
 import com.jopaulo.orderserviceapi.entities.Order;
 import com.jopaulo.orderserviceapi.mapper.OrderMapper;
 import com.jopaulo.orderserviceapi.repositories.OrderRepository;
@@ -26,6 +27,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository repository;
     private final OrderMapper mapper;
+    private final UserServiceFeignClient userServiceFeignClient;
 
     @Override
     public Order findById(final Long id){
@@ -38,6 +40,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void save(CreateOrderRequest request) {
+        validateUserId(request.requesterId());
         final var entity = repository.save(mapper.fromRequest(request));
         log.info("Ordem criada: {}", entity);
     }
@@ -72,5 +75,10 @@ public class OrderServiceImpl implements OrderService {
                 orderBy
         );
         return repository.findAll(pageRequest);
+    }
+
+    void validateUserId(final String userId){
+        final var response = userServiceFeignClient.findById(userId).getBody();
+        log.info("Usuário encontrado: {}", response);
     }
 }

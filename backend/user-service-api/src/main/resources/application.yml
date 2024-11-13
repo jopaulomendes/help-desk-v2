@@ -3,6 +3,6 @@ spring:
     name: 'user-service-api'
   cloud:
     config:
-      uri: http://localhost:8888
+      uri: http://localhost:8080
   profiles:
     active: dev

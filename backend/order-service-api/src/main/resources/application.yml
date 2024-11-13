@@ -12,6 +12,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create  # Use 'update' para atualizar o esquema do banco
+      dialect: org.hibernate.dialect.MySQLDialect # Dialeto para MySQL
     show-sql: true  # Opcional, para exibir as queries SQL no console
   profiles:
     active: dev
