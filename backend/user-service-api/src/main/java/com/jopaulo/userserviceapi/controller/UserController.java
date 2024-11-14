@@ -61,7 +61,7 @@ public interface UserController {
     @PostMapping
     ResponseEntity<Void> save(@Valid @RequestBody final CreateUserRequest createUserRequest);
 
-    @Operation(summary = "Buscar todos os usuparios")
+    @Operation(summary = "Buscar todos os usuários")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuários encontrados",
                     content = @Content(

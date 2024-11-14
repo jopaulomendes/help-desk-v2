@@ -52,7 +52,7 @@ public class UserService {
     private User find (final String id){
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Id: " +id+ " não encontrado.")
+                        "Código: " + id + " não encontrado.")
                 );
     }
 

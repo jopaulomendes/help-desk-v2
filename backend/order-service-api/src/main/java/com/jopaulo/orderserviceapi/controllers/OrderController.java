@@ -14,6 +14,7 @@ import models.requests.CreateOrderRequest;
 import models.requests.CreateUserRequest;
 import models.requests.UpdateOrdeRequest;
 import models.response.OrderResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -85,7 +86,7 @@ public interface OrderController {
     ResponseEntity<Void> save(@Valid @RequestBody final CreateOrderRequest request);
 
     @PutMapping("/{id}")
-    @Operation(summary = "Atualziar ordem de serviço")
+    @Operation(summary = "Atualizar ordem de serviço")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Ordem de Serviço atulizada"),
             @ApiResponse(responseCode = "400", description = "O servidor não pode ou não processará a solicitação devido a algo que é percebido como um erro do cliente",
@@ -136,4 +137,6 @@ public interface OrderController {
             @Parameter(description = "Ordem Id", example = "1", required = true)
             @PathVariable(name = "id") final Long Id
     );
+
+    ResponseEntity<Page<OrderResponse>> findAllPaginated(Integer page, Integer linesPerPage, String direction, String orderBy);
 }

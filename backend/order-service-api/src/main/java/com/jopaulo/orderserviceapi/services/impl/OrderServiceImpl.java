@@ -53,6 +53,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse update(Long id, UpdateOrdeRequest request) {
+        validateUsers(request);
+
         Order entity = findById(id);
         entity = mapper.fromRequest(entity, request);
 
@@ -85,5 +87,10 @@ public class OrderServiceImpl implements OrderService {
 
     UserResponse validateUserId(final String userId){
         return userServiceFeignClient.findById(userId).getBody();
+    }
+
+    private void validateUsers(UpdateOrdeRequest request) {
+        if (request.requesterId() != null) validateUserId(request.requesterId());
+        if (request.customerId() != null) validateUserId(request.customerId());
     }
 }
