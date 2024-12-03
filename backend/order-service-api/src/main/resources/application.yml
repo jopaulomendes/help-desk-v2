@@ -16,7 +16,3 @@ spring:
     show-sql: true  # Opcional, para exibir as queries SQL no console
   profiles:
     active: dev
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
