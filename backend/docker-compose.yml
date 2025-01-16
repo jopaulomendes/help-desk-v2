@@ -45,6 +45,26 @@ services:
     links:
       - config-server
 
+  mysql:
+    image: mysql:8.0.32  # Certifique-se de usar a mesma versão do MySQL Connector usado pela API
+    container_name: 'mysql'  # Nome do container
+    restart: always  # Reinicia o container automaticamente em caso de falhas
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: helpdesk_db  # Nome do banco de dados inicial
+      MYSQL_USER: user            # Usuário adicional para a aplicação
+      MYSQL_PASSWORD: password    # Senha do usuário
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql  # Use um volume nomeado
+    networks:
+      - helpdesk
+
+volumes:
+  mysql_data:
+    driver: local  # Usando o driver local para o volume
+
 networks:
   helpdesk:
     driver: bridge
