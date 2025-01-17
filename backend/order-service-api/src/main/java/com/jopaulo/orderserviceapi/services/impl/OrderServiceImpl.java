@@ -56,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
                 new OrderCreatedMessage(mapper.fromEntity(entity), customer, requester)
         );
     }
+    //mtqb afoq uwpi fgbr
 
     @Override
     public OrderResponse update(Long id, UpdateOrdeRequest request) {
