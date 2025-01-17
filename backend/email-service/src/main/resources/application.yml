@@ -4,16 +4,6 @@ spring:
 mail:
   host: ${MAIL_HOST:smtp.gmail.com}
   port: ${MAIL_PORT:587}
-  username: ${MAIL_USERNAME:jopaulo758@gmail.com}
-  password: ${MAIL_PASSWORD:mtqb afoq uwpi fgbr}
+  username: ${MAIL_USERNAME}
+  password: ${MAIL_PASSWORD}
   protocol: ${MAIL_PROTOCOL:smtp}
-  text-created-order-confirmation: |
-    Olá %s, sua Ordem de Serviço foi criada com sucesso!
-  
-    Datalhes da Ordem de Serviço ->
-    - Código: %s
-    - Título: %s
-    - Descrição: %s
-    - Data da criação: %s
-    - Status: %s
-    - Técnico responsável: %s
