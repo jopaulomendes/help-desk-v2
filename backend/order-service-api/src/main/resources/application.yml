@@ -1,6 +1,9 @@
 spring:
   application:
     name: 'order-service-api'
+  cloud:
+    config:
+      uri: 'config-service'
   datasource:
     url: 'jdbc:mysql://mysql:3306/helpdesk_db'
     username: 'root'
