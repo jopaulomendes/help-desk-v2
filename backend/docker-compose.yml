@@ -13,26 +13,10 @@ services:
     networks:
       - helpdesk
 
-  config-server:
-    image: jopaulomendes/helpdesk-config-server
-    container_name: 'config-server'
-    environment:
-      - CONFIG_SERVER_URI=https://github.com/jopaulomendes/help-desk-v2-config
-      - CONFIG_SERVER_USERNAME=jopaulomendes
-      - CONFIG_SERVER_PASSWORD=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
-      - PORT=8888
-    ports:
-      - "8888:8888"
-    expose:
-      - 8888
-    networks:
-      - helpdesk
-
   service-discovery:
-    image: jopaulomendes/helpdesk-service-discovery
+    image: jopaulo/helpdesk-service-discovery
     container_name: 'service-discovery'
     environment:
-      - CONFIG_SERVER_URI=config-server:8888
       - PORT=8761
     ports:
       - "8761:8761"
@@ -40,10 +24,21 @@ services:
       - 8761
     networks:
       - helpdesk
-    depends_on:
-      - config-server
-    links:
-      - config-server
+
+#  config-server:
+#    image: jopaulomendes/helpdesk-config-server
+#    container_name: 'config-server'
+#    environment:
+#      - CONFIG_SERVER_URI=https://github.com/jopaulomendes/help-desk-v2-config
+#      - CONFIG_SERVER_USERNAME=jopaulomendes
+#      - CONFIG_SERVER_PASSWORD=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
+#      - PORT=8888
+#    ports:
+#      - "8888:8888"
+#    expose:
+#      - 8888
+#    networks:
+#      - helpdesk
 
   mysql:
     image: mysql:8.0.32  # Certifique-se de usar a mesma versão do MySQL Connector usado pela API
