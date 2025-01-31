@@ -12,3 +12,8 @@ eureka:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   profiles:
     active: dev
+springdoc:
+  openapi:
+    title: 'BFF Helpdesk API'
+    description: 'Componente responsável para agregar as informações dos microserviços do sistema'
+    version: '1.0.0'

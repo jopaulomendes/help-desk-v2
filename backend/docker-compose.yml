@@ -46,7 +46,7 @@ services:
     environment:
       - CONFIG_SERVER_URI=https://github.com/jopaulomendes/help-desk-v2-config
       - CONFIG_SERVER_USERNAME=jopaulomendes
-      - CONFIG_SERVER_PASSWORD=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
+#      - CONFIG_SERVER_PASSWORD={token-do-github}
       - EUREKA_URI=http://service-discovery:8761/eureka
       - PORT=8888
     ports:
