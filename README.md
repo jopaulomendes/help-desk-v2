@@ -82,4 +82,4 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 ## Contato
 
-Valdir Cezar - [LinkedIn](https://www.linkedin.com/in/valdircezar/)
+João Paulo da Mata Mendes - [LinkedIn](https://www.linkedin.com/in/jopaulomendes/)
